@@ -15,7 +15,7 @@ Automation of home infrastructure via the VSphere provider. This provider is cur
 ## Goals
 The goals for this repository are:
 
-1. Use Terraform with the VSphere provider to fully automate all virtual machine creation as well as networking, data storage via VCenter on an ESXI host.
+1. Use Terraform with the VSphere provider to fully automate all virtual machine creation as well as networking and data storage via VCenter on an ESXI host.
 2. Produce the code in such a way that's usable, readable and maintainable by third parties.
 3. Ensure the code is able to be built upon and expanded to add additional infrastructure and features.
 4. Keep in-line with IAC methodologies.
@@ -27,7 +27,7 @@ The goals for this repository are:
 - The Linux OVF templates have 'cloud-init' and 'vmware-tools' installed.
 
 ## Install
-This project uses [Terraform](https://www.terraform.io/). You'll need to install Terraform to run this code, once Terraform in installed;
+This project uses [Terraform](https://www.terraform.io/). You'll need to install Terraform to run this code, once Terraform is installed:
 - Clone the repo:
 ```sh
 $ git clone https://github.com/tekore/Vsphere
@@ -43,13 +43,13 @@ The provided .tfvars template "[tfvars-template](https://github.com/tekore/Vsphe
 
 Once this is done, run;
 ```sh
-$ terraform plan --var-file="tfvars-template.tfvars"
-$ terraform apply --var-file="tfvars-template.tfvars"
+$ terraform plan --var-file="template.tfvars"
+$ terraform apply --var-file="template.tfvars"
 ```
 
 ## Issues
 - With nightly Vyos builds 'cloud-init' installs are not natively possible. Unless you're willing to pay for a Vyos subscription, including an SSH key in your Vyos OVF template for future configuration is recommended.
-- For the 'script_text' customization to work (in doc vms.tf), the Linux OVF template will need 'cloud-init' and 'vmware-tools' installed.
+- For the 'script_text' customization to work (in vms.tf doc), the Linux OVF template will need 'cloud-init' and 'vmware-tools' installed.
 - This code is for a SINGLE ESXI host, to enable several ESXI hosts in a cluster, add the following resource:
 ```sh
 resource "vsphere_compute_cluster" "compute_cluster" {
