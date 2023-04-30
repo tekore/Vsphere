@@ -39,7 +39,7 @@ $ terraform init
 ```
 
 ## Usage
-The provided .tfvars template "[tfvars-template.tfvars](https://github.com/tekore/Vsphere/blob/main/tfvars-template.tfvars "tfvars-template.tfvars")" will need to be updated with the needed variables relevant to your install.  
+The provided .tfvars template "[tfvars-template](https://github.com/tekore/Vsphere/blob/main/tfvars-template "tfvars-template")" will need to be updated with the needed variables relevant to your install.  
 
 Once this is done, run;
 ```sh
