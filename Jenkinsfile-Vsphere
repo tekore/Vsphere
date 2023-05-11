@@ -33,7 +33,7 @@ pipeline {
     }
     stage('Upload the new Terraform state') {
       steps {
-        sh '/google-cloud-sdk/bin/gsutil cp /var/lib/jenkins/workspace/Vsphere/terraform.tfstate gs://tekore-storage/Vsphere/terraform.tfstate'
+        sh '/Hub/Scripts/upload-Vsphere-tfstate.sh'
       }
     }
   }
