@@ -38,6 +38,7 @@ vlans = {
 templates = {
   vyos  = ""
   rhel8 = ""
+  truenas = ""
 }
 
 //vms.tf

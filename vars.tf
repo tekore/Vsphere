@@ -60,6 +60,7 @@ variable "templates" {
   default = {
     vyos = "http://<TEMPLATE-ADDRESS>/vyos.ovf"
     rhel8 = "http://<TEMPLATE-ADDRESS>/rhel8.ovf"
+    truenas = "http://<TEMPLATE-ADDRESS>/truenas.ovf"
   }
 }
 
