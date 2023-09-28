@@ -26,12 +26,12 @@ data "vsphere_content_library" "iso_library" {
 #  depends_on = [vsphere_content_library_item.content_rhel8]
 #}
 
-#data "vsphere_content_library_item" "content_vyos" {
-#  name       = "vyos"
-#  library_id = vsphere_content_library.ovf_library.id
-#  type       = "OVF"
-#  depends_on = [vsphere_content_library_item.content_vyos]
-#}
+data "vsphere_content_library_item" "content_vyos" {
+  name       = "vyos"
+  library_id = vsphere_content_library.ovf_library.id
+  type       = "OVF"
+  depends_on = [vsphere_content_library_item.content_vyos]
+}
 
 data "vsphere_content_library_item" "content_truenas" {
   name       = "truenas"
@@ -64,13 +64,13 @@ resource "vsphere_content_library" "iso_library" {
 #  depends_on  = [vsphere_content_library.ovf_library]
 #}
 
-#resource "vsphere_content_library_item" "content_vyos" {
-#  name        = "VYOS"
-#  description = "VYOS OVF Template"
-#  file_url    = var.templates.vyos
-#  library_id  = data.vsphere_content_library.ovf_library.id
-#  depends_on  = [vsphere_content_library.ovf_library]
-#}
+resource "vsphere_content_library_item" "content_vyos" {
+  name        = "VYOS"
+  description = "VYOS OVF Template"
+  file_url    = var.templates.vyos
+  library_id  = data.vsphere_content_library.ovf_library.id
+  depends_on  = [vsphere_content_library.ovf_library]
+}
 
 resource "vsphere_content_library_item" "content_truenas" {
   name        = "TRUENAS"
