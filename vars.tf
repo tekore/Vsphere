@@ -1,3 +1,8 @@
+// IP of the Python webserver hosting the os images
+variable "server_ip" {
+  default = ""
+}
+
 //data-storage.tf
 variable "data-storage" {
   type = map(string)

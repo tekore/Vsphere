@@ -67,7 +67,7 @@ resource "vsphere_content_library" "iso_library" {
 resource "vsphere_content_library_item" "content_vyos" {
   name        = "VYOS"
   description = "VYOS OVF Template"
-  file_url    = var.templates.vyos
+  file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.vyos)
   library_id  = data.vsphere_content_library.ovf_library.id
   depends_on  = [vsphere_content_library.ovf_library]
 }
@@ -75,7 +75,7 @@ resource "vsphere_content_library_item" "content_vyos" {
 resource "vsphere_content_library_item" "content_truenas" {
   name        = "TRUENAS"
   description = "TRUENAS OVF Template"
-  file_url    = var.templates.truenas
+  file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.truenas)
   library_id  = data.vsphere_content_library.ovf_library.id
   depends_on  = [vsphere_content_library.ovf_library]
 }
