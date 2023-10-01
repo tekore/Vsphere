@@ -7,7 +7,7 @@ resource "vsphere_virtual_machine" "vyos" {
   memory             = 1024
   memory_reservation = 1024
   firmware           = "efi"
-  guest_id           = "other5xLinux64Guest"
+  guest_id           = "debian10_64Guest"
   pci_device_id      = [var.host.pci-ethernet-mac]
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
@@ -29,46 +29,46 @@ resource "vsphere_virtual_machine" "vyos" {
   }
 }
 
-#resource "vsphere_virtual_machine" "rhel8" {
-#  name                 = "rhel8"
-#  datastore_id         = data.vsphere_datastore.datastore.id
-#  host_system_id       = data.vsphere_host.esxi.id
-#  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
-#  firmware             = "efi"
-#  guest_id             = "rhel8_64Guest"
-#  num_cpus             = 2
-#  memory               = 2048
-#  memory_reservation   = 2048
-#  wait_for_guest_net_timeout = 0
-#  wait_for_guest_ip_timeout  = 0
-#  network_interface {
-#    network_id = data.vsphere_network.lab.id
-#  }
-#  disk {
-#    label            = "disk0"
-#    size             = 20
-#    thin_provisioned = true
-#  }
-#  clone {
-#    template_uuid = data.vsphere_content_library_item.content_rhel8.id
-#    customize {
-#      linux_options {
-#        host_name   = "rhel8"
-#        domain      = var.domain
-#	script_text = var.cloudinit-scripts.sshkey
-#      }
-#      network_interface {}
-#    }
-#  }
-#}
-#
+resource "vsphere_virtual_machine" "rhel9" {
+  name                 = "rhel9"
+  datastore_id         = data.vsphere_datastore.datastore.id
+  host_system_id       = data.vsphere_host.esxi.id
+  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
+  firmware             = "efi"
+  guest_id             = "rhel8_64Guest"
+  num_cpus             = 2
+  memory               = 2048
+  memory_reservation   = 2048
+  wait_for_guest_net_timeout = 0
+  wait_for_guest_ip_timeout  = 0
+  network_interface {
+    network_id = data.vsphere_network.lab.id
+  }
+  disk {
+    label            = "disk0"
+    size             = 20
+    thin_provisioned = true
+  }
+  clone {
+    template_uuid = data.vsphere_content_library_item.content_rhel9.id
+    #customize {
+    #  linux_options {
+    #    host_name   = "rhel9"
+    #    domain      = var.domain
+    #     script_text = var.cloudinit-scripts.sshkey
+    #  }
+    #  network_interface {}
+    #}
+  }
+}
+
 #resource "vsphere_virtual_machine" "kubernetes_master" {
 #  name                 = "kubernetes_master"
 #  datastore_id         = data.vsphere_datastore.datastore.id
 #  host_system_id       = data.vsphere_host.esxi.id
 #  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
 #  firmware             = "efi"
-#  guest_id             = "rhel8_64Guest"
+#  guest_id             = "rhel9_64Guest"
 #  num_cpus             = 2
 #  memory               = 4096
 #  memory_reservation   = 4096
@@ -85,10 +85,10 @@ resource "vsphere_virtual_machine" "vyos" {
 #    thin_provisioned = true
 #  }
 #  clone {
-#    template_uuid = data.vsphere_content_library_item.content_rhel8.id
+#    template_uuid = data.vsphere_content_library_item.content_rhel9.id
 #    customize {
 #      linux_options {
-#        host_name   = "rhel8"
+#        host_name   = "rhel9"
 #        domain      = var.domain
 #        script_text = var.cloudinit-scripts.sshkey
 #      }
@@ -104,7 +104,7 @@ resource "vsphere_virtual_machine" "vyos" {
 #  host_system_id       = data.vsphere_host.esxi.id
 #  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
 #  firmware             = "efi"
-#  guest_id             = "rhel8_64Guest"
+#  guest_id             = "rhel9_64Guest"
 #  num_cpus             = 2
 #  memory               = 4096
 #  memory_reservation   = 4096
@@ -119,10 +119,10 @@ resource "vsphere_virtual_machine" "vyos" {
 #    thin_provisioned = true
 #  }
 #  clone {
-#    template_uuid = data.vsphere_content_library_item.content_rhel8.id
+#    template_uuid = data.vsphere_content_library_item.content_rhel9.id
 #    customize {
 #      linux_options {
-#        host_name   = "rhel8"
+#        host_name   = "rhel9"
 #        domain      = var.domain
 #        script_text = var.cloudinit-scripts.sshkey
 #      }
@@ -137,7 +137,7 @@ resource "vsphere_virtual_machine" "truenas" {
   resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
   firmware             = "efi"
   guest_id             = "debian11_64Guest"
-  num_cpus             = 1
+  num_cpus             = 2
   memory               = 6144
   memory_reservation   = 6144
   wait_for_guest_net_timeout = 0

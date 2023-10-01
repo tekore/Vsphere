@@ -63,9 +63,9 @@ variable "templates" {
   type = map(string)
   sensitive = true
   default = {
-    vyos = "http://<TEMPLATE-ADDRESS>/vyos.ovf"
-    rhel8 = "http://<TEMPLATE-ADDRESS>/rhel8.ovf"
-    truenas = "http://<TEMPLATE-ADDRESS>/truenas.ovf"
+    vyos = "http://<TEMPLATE-ADDRESS>/vyos.ova"
+    rhel9 = "http://<TEMPLATE-ADDRESS>/rhel9.ova"
+    truenas = "http://<TEMPLATE-ADDRESS>/truenas.ova"
   }
 }
 

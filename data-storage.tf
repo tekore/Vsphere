@@ -19,12 +19,12 @@ data "vsphere_content_library" "iso_library" {
   depends_on = [vsphere_content_library.iso_library]
 }
 
-#data "vsphere_content_library_item" "content_rhel8" {
-#  name       = "rhel8"
-#  library_id = vsphere_content_library.ovf_library.id
-#  type       = "OVF"
-#  depends_on = [vsphere_content_library_item.content_rhel8]
-#}
+data "vsphere_content_library_item" "content_rhel9" {
+  name       = "rhel9"
+  library_id = vsphere_content_library.ovf_library.id
+  type       = "template"
+  depends_on = [vsphere_content_library_item.content_rhel9]
+}
 
 data "vsphere_content_library_item" "content_vyos" {
   name       = "vyos"
@@ -56,17 +56,17 @@ resource "vsphere_content_library" "iso_library" {
   storage_backing = [data.vsphere_datastore.datastore.id]
 }
 
-#resource "vsphere_content_library_item" "content_rhel8" {
-#  name        = "RHEL8"
-#  description = "RHEL8 OVF Template"
-#  file_url    = var.templates.rhel8
-#  library_id  = data.vsphere_content_library.ovf_library.id
-#  depends_on  = [vsphere_content_library.ovf_library]
-#}
+resource "vsphere_content_library_item" "content_rhel9" {
+  name        = "RHEL9"
+  description = "RHEL9 OVA Template"
+  file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.rhel9)
+  library_id  = data.vsphere_content_library.ovf_library.id
+  depends_on  = [vsphere_content_library.ovf_library]
+}
 
 resource "vsphere_content_library_item" "content_vyos" {
   name        = "VYOS"
-  description = "VYOS OVF Template"
+  description = "VYOS OVA Template"
   file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.vyos)
   library_id  = data.vsphere_content_library.ovf_library.id
   depends_on  = [vsphere_content_library.ovf_library]
@@ -74,7 +74,7 @@ resource "vsphere_content_library_item" "content_vyos" {
 
 resource "vsphere_content_library_item" "content_truenas" {
   name        = "TRUENAS"
-  description = "TRUENAS OVF Template"
+  description = "TRUENAS OVA Template"
   file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.truenas)
   library_id  = data.vsphere_content_library.ovf_library.id
   depends_on  = [vsphere_content_library.ovf_library]
