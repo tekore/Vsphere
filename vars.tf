@@ -18,10 +18,10 @@ variable "host" {
   sensitive = true
   default = {
     hostaddress = "<ESXI-IP>"
-    username = "username"
-    password = "Password123"
+    username = "<Username>"
+    password = "<Password>"
     license = "<License-Key>"
-    pci-ethernet-mac = "<ESXI-HOST-ETHERNET-MAC>"
+    pci-ethernet-mac = "<ESXI-Host-Ethernet-MAC>"
   }
 }
 
@@ -30,8 +30,8 @@ variable "vcenter" {
   type = map(string)
   sensitive = true
   default = {
-    username = "username@vsphere.local"
-    password = "Password123"
+    username = "<Username>@vsphere.local"
+    password = "<Password>"
     hostaddress = "<VCenter-IP>"
   }
 }
@@ -63,9 +63,9 @@ variable "templates" {
   type = map(string)
   sensitive = true
   default = {
-    vyos = "http://<TEMPLATE-ADDRESS>/vyos.ova"
-    rhel9 = "http://<TEMPLATE-ADDRESS>/rhel9.ova"
-    truenas = "http://<TEMPLATE-ADDRESS>/truenas.ova"
+    vyos = "http://<Template-Address>/vyos.ova"
+    rhel9 = "http://<Template-Address>/rhel.ova"
+    truenas = "http://<Template-address>/truenas.ova"
   }
 }
 
