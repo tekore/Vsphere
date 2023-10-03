@@ -51,14 +51,14 @@ resource "vsphere_virtual_machine" "rhel9" {
   }
   clone {
     template_uuid = data.vsphere_content_library_item.content_rhel9.id
-    #customize {
-    #  linux_options {
-    #    host_name   = "rhel9"
-    #    domain      = var.domain
-    #     script_text = var.cloudinit-scripts.sshkey
-    #  }
-    #  network_interface {}
-    #}
+    customize {
+      linux_options {
+        host_name   = "rhel9"
+        domain      = var.domain
+         script_text = var.cloudinit-scripts.sshkey
+      }
+      network_interface {}
+    }
   }
 }
 
@@ -150,13 +150,6 @@ resource "vsphere_virtual_machine" "truenas" {
     size             = 20
     thin_provisioned = true
   }
-  #disk {
-  #  datastore_id = data.vsphere_datastore.datastore.id
-  #  label  = "TrueNas1TB"
-  #  attach = true
-  #  unit_number = 1
-  #  path   = "/TrueNAS_1TB.vmdk"
-  #}
   clone {
     template_uuid = data.vsphere_content_library_item.content_truenas.id
   }
