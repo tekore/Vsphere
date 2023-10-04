@@ -1,8 +1,9 @@
 resource "vsphere_virtual_machine" "vyos" {
   name               = "vyos"
-  resource_pool_id   = data.vsphere_host.esxi.resource_pool_id
   datastore_id       = data.vsphere_datastore.datastore.id
-  host_system_id     = data.vsphere_host.esxi.id
+  host_system_id     = vsphere_host.esxi.id
+  resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
+  #resource_pool_id   = vsphere_host.esxi.id
   num_cpus           = 1
   memory             = 1024
   memory_reservation = 1024
@@ -20,20 +21,22 @@ resource "vsphere_virtual_machine" "vyos" {
     thin_provisioned = true
   }
   clone {
-    template_uuid = data.vsphere_content_library_item.content_vyos.id
+    template_uuid = vsphere_content_library_item.content_vyos.id
   }
   vapp {
     properties = {
       "password" = var.host.password
     }
   }
+  depends_on = [vsphere_content_library_item.content_vyos]
 }
 
 resource "vsphere_virtual_machine" "rhel9" {
   name                 = "rhel9"
   datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = data.vsphere_host.esxi.id
-  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
+  host_system_id       = vsphere_host.esxi.id
+  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
+  #resource_pool_id     = vsphere_host.esxi.id
   firmware             = "efi"
   guest_id             = "other26xLinux64Guest"
   num_cpus             = 2
@@ -50,23 +53,16 @@ resource "vsphere_virtual_machine" "rhel9" {
     thin_provisioned = true
   }
   clone {
-    template_uuid = data.vsphere_content_library_item.content_rhel9.id
-    customize {
-      linux_options {
-        host_name   = "rhel9"
-        domain      = var.domain
-         script_text = var.cloudinit-scripts.sshkey
-      }
-      network_interface {}
-    }
+    template_uuid = vsphere_content_library_item.content_rhel9.id
   }
+  depends_on = [vsphere_content_library_item.content_rhel9]
 }
 
 resource "vsphere_virtual_machine" "kubernetes_master" {
   name                 = "kubernetes_master"
   datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = data.vsphere_host.esxi.id
-  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
+  host_system_id       = vsphere_host.esxi.id
+  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware             = "efi"
   guest_id             = "other26xLinux64Guest"
   num_cpus             = 2
@@ -85,24 +81,17 @@ resource "vsphere_virtual_machine" "kubernetes_master" {
     thin_provisioned = true
   }
   clone {
-    template_uuid = data.vsphere_content_library_item.content_rhel9.id
-    #customize {
-    #  linux_options {
-    #    host_name   = "rhel9"
-    #    domain      = var.domain
-    #    script_text = var.cloudinit-scripts.sshkey
-    #  }
-    #  network_interface {}
-    #}
+    template_uuid = vsphere_content_library_item.content_rhel9.id
   }
+  depends_on = [vsphere_content_library_item.content_rhel9]
 }
 
 resource "vsphere_virtual_machine" "kubernetes_worker" {
   count                = var.worker-nodes-no
   name                 = "kubernetes_worker${count.index}"
   datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = data.vsphere_host.esxi.id
-  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
+  host_system_id       = vsphere_host.esxi.id
+  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware             = "efi"
   guest_id             = "other26xLinux64Guest"
   num_cpus             = 2
@@ -119,22 +108,16 @@ resource "vsphere_virtual_machine" "kubernetes_worker" {
     thin_provisioned = true
   }
   clone {
-    template_uuid = data.vsphere_content_library_item.content_rhel9.id
-    #customize {
-    #  linux_options {
-    #    host_name   = "rhel9"
-    #    domain      = var.domain
-    #    script_text = var.cloudinit-scripts.sshkey
-    #  }
-    #  network_interface {}
-    #}
+    template_uuid = vsphere_content_library_item.content_rhel9.id
   }
+  depends_on = [vsphere_content_library_item.content_rhel9]
 }
+
 resource "vsphere_virtual_machine" "truenas" {
   name                 = "truenas"
   datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = data.vsphere_host.esxi.id
-  resource_pool_id     = data.vsphere_host.esxi.resource_pool_id
+  host_system_id       = vsphere_host.esxi.id
+  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware             = "efi"
   guest_id             = "debian11_64Guest"
   num_cpus             = 2
@@ -151,6 +134,7 @@ resource "vsphere_virtual_machine" "truenas" {
     thin_provisioned = true
   }
   clone {
-    template_uuid = data.vsphere_content_library_item.content_truenas.id
+    template_uuid = vsphere_content_library_item.content_truenas.id
   }
+  depends_on = [vsphere_content_library_item.content_truenas]
 }
