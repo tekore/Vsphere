@@ -3,12 +3,11 @@ resource "vsphere_virtual_machine" "vyos" {
   datastore_id       = data.vsphere_datastore.datastore.id
   host_system_id     = vsphere_host.esxi.id
   resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
-  #resource_pool_id   = vsphere_host.esxi.id
+  firmware           = "efi"
+  guest_id           = "debian10_64Guest"
   num_cpus           = 1
   memory             = 1024
   memory_reservation = 1024
-  firmware           = "efi"
-  guest_id           = "debian10_64Guest"
   pci_device_id      = [var.host.pci-ethernet-mac]
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
@@ -24,7 +23,7 @@ resource "vsphere_virtual_machine" "vyos" {
     template_uuid = vsphere_content_library_item.content_vyos.id
   }
   vapp {
-    properties = {
+    properties   = {
       "password" = var.host.password
     }
   }
@@ -32,16 +31,15 @@ resource "vsphere_virtual_machine" "vyos" {
 }
 
 resource "vsphere_virtual_machine" "rhel9" {
-  name                 = "rhel9"
-  datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = vsphere_host.esxi.id
-  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
-  #resource_pool_id     = vsphere_host.esxi.id
-  firmware             = "efi"
-  guest_id             = "other26xLinux64Guest"
-  num_cpus             = 2
-  memory               = 2048
-  memory_reservation   = 2048
+  name               = "rhel9"
+  datastore_id       = data.vsphere_datastore.datastore.id
+  host_system_id     = vsphere_host.esxi.id
+  resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
+  firmware           = "efi"
+  guest_id           = "other26xLinux64Guest"
+  num_cpus           = 2
+  memory             = 2048
+  memory_reservation = 2048
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
   network_interface {

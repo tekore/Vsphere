@@ -4,13 +4,9 @@ data "vsphere_host_thumbprint" "thumbprint" {
 }
 
 resource "vsphere_compute_cluster" "compute_cluster" {
-  name                       = "compute-cluster"
-  datacenter_id              = vsphere_datacenter.datacenter.moid
-  host_system_ids            = [vsphere_host.esxi.id]
-#  drs_enabled               = false
-#  drs_automation_level      = "fullyAutomated"
-#  ha_enabled                = false
-#  force_evacuate_on_destroy = true
+   name                       = "compute-cluster"
+   datacenter_id              = vsphere_datacenter.datacenter.moid
+   host_system_ids            = [vsphere_host.esxi.id]
 }
 
 resource "vsphere_host" "esxi" {
@@ -21,4 +17,7 @@ resource "vsphere_host" "esxi" {
   license    = var.host.license
   datacenter = vsphere_datacenter.datacenter.moid
   depends_on = [vsphere_datacenter.datacenter]
+  lifecycle {
+    ignore_changes = [cluster]
+  }
 }
