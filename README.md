@@ -9,7 +9,6 @@ Automation of home infrastructure via the VSphere provider. This provider is cur
 - [Prerequisites](#Prerequisites)
 - [Install](#install)
 - [Usage](#usage)
-- [Issues](#Issues)
 - [Maintainers](#maintainers)
 
 ## Goals
@@ -21,10 +20,9 @@ The goals for this repository are:
 4. Keep in-line with IAC methodologies.
 
 ## Prerequisites
-- Two OVF templates hosted on an accessible web server (Vyos and a Linux distribution).
+- OVA templates hosted on an accessible web server. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py)
 - A ESXI host with a passthrough enabled network card.
 - A VCenter installation. [See..](https://github.com/tekore/Hypervisor-Automation)
-- The Linux OVF templates have 'cloud-init' and 'vmware-tools' installed.
 
 ## Install
 This project uses [Terraform](https://www.terraform.io/). You'll need to install Terraform to run this code, once Terraform is installed:
@@ -43,28 +41,8 @@ The provided .tfvars template "[tfvars-template](https://github.com/tekore/Vsphe
 
 Once this is done, run;
 ```sh
-$ terraform plan --var-file="template.tfvars"
-$ terraform apply --var-file="template.tfvars"
-```
-
-## Issues
-- With nightly Vyos builds 'cloud-init' installs are not natively possible. Unless you're willing to pay for a Vyos subscription, including an SSH key in your Vyos OVF template for future configuration is recommended.
-- For the 'script_text' customization to work (in vms.tf doc), the Linux OVF template will need 'cloud-init' and 'vmware-tools' installed.
-- This code is for a SINGLE ESXI host, to enable several ESXI hosts in a cluster, add the following resource:
-```sh
-resource "vsphere_compute_cluster" "compute_cluster" {
-  name                      = "compute-cluster"
-  datacenter_id             = vsphere_datacenter.datacenter.moid
-  host_system_ids           = [vsphere_host.esxi.id]
-}
-```
-Then change the 'resource_pool_id' in 'vms.tf' to reflect the new resource:
-```sh
-resource "vsphere_virtual_machine" "rhel8" {
-...
-  resource_pool_id = vsphere_compute_cluster.compute_cluster.resource_pool_id
-...
-}
+$ terraform plan -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
+$ terraform apply -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
 ```
 
 ## Maintainers
