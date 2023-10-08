@@ -1,3 +1,37 @@
 #cloud-config
 vyos_config_commands:
   - set system host-name 'vyos-prod'
+
+# Configure the LAN interface address
+# Configure the WAN interface
+# Configure NAT source rules
+# - set nat source rule 100 outbound-interface {{ item.name }}
+# - set nat source rule 100 source address {{ vars.subnets.lan }}
+# - set nat source rule 100 translation address masquerade
+# Configure DHCP and MAC reservations
+# - set service dhcp-server shared-network-name 'LAN' authoritative
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} default-router {{ vars.lan.ip }}
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnnets.lan }} domain-name {{ vars.domain }}
+# - set service dhcp-server shared-network-name 'LAN' name-server {{ vars.lan.ip }}
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} lease 1800
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} range 0 start {{ vars.lan.dhcp_start }}
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} range 0 stop {{ vars.lan.dhcp_stop }}
+# - set service dhcp-server hostfile-update
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} static-mapping kubernetes_master ip-address {{ vars.kubernetes_master.ip }}
+# - set service dhcp-server shared-network-name 'LAN' subnet {{ vars.subnets.lan }} static-mapping kubernetes_master mac-address {{ vars.kubernetes_master.mac }}
+# Configure the firewall rules and merge with existing
+# Configure NAT destination rules
+# - set nat destination rule 110 description "kubernetes api"
+# - set nat destination rule 110 destination address '"{{ ansible_ssh_host }}"'
+# - set nat destination rule 110 destination port '"{{ vars.kubernes_master.dport }}"'
+# - set nat destination rule 110 inbound-interface {{ item.name }}
+# - set nat destination rule 110 protocol 'tcp'
+# - set nat destination rule 110 translation address '"{{ vars.kubernetes_master.ip }}"'
+# - set nat destination rule 110 translation port '"{{ vars.kubernes_master.sport }}"'
+# Configure DNS
+# - set system name-server {{ vars.dns.1 }}
+# - set system name-server {{ vars.dns.2 }}
+# - set service dns forwarding system
+# - set service dns forwarding listen-address {{ vars.addresses.LAN }}
+# - set service dns forwarding allow-from {{ vars.subnets.LAN }}
+#
