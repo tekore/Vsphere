@@ -1,3 +1,7 @@
+data "local_file" "vyos" {
+  filename = "${path.module}/vyos/vyos.yaml"
+}
+
 resource "vsphere_virtual_machine" "vyos" {
   name               = "vyos"
   datastore_id       = data.vsphere_datastore.datastore.id
@@ -23,10 +27,15 @@ resource "vsphere_virtual_machine" "vyos" {
     template_uuid = vsphere_content_library_item.content_vyos.id
   }
   vapp {
-    properties   = {
-      "password" = var.host.password
+    properties    = {
+      password  = var.host.password
+      user-data = filebase64(data.local_file.vyos.filename)
     }
   }
+  lifecycle {
+    ignore_changes = [vapp[0].properties,]
+  }
+  replace_trigger = filebase64(data.local_file.vyos.filename)
   depends_on = [vsphere_content_library_item.content_vyos]
 }
 
@@ -133,6 +142,17 @@ resource "vsphere_virtual_machine" "truenas" {
   }
   clone {
     template_uuid = vsphere_content_library_item.content_truenas.id
+    customize {
+      linux_options {
+        host_name = "truenas"
+	domain = ".local"
+      }
+      network_interface {
+        ipv4_address = var.static-ips.truenas
+        ipv4_netmask = 24
+      }
+      ipv4_gateway = var.static-ips.gateway
+    }
   }
   depends_on = [vsphere_content_library_item.content_truenas]
 }

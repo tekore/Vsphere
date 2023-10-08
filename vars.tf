@@ -77,6 +77,10 @@ variable "static-macs" {
   }
 }
 
+variable "static-ips" {
+  type = map(string)
+}
+
 variable "worker-nodes-no" {
   type = number
   default = 3
