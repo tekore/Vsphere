@@ -1,5 +1,5 @@
 data "local_file" "vyos" {
-  filename = "${path.module}/vyos/vyos.yaml"
+  filename = "${path.module}/cloud-init/vyos.yaml"
 }
 
 resource "vsphere_virtual_machine" "vyos" {
@@ -54,6 +54,10 @@ resource "vsphere_virtual_machine" "rhel9" {
   network_interface {
     network_id = data.vsphere_network.lab.id
   }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path         = "ISO/rhel9.iso"
+  }
   disk {
     label            = "disk0"
     size             = 20
@@ -62,7 +66,7 @@ resource "vsphere_virtual_machine" "rhel9" {
   clone {
     template_uuid = vsphere_content_library_item.content_rhel9.id
   }
-  depends_on = [vsphere_content_library_item.content_rhel9]
+  depends_on = [vsphere_content_library_item.content_rhel9, vsphere_file.rhel9_rhel9_cloud_init_upload]
 }
 
 resource "vsphere_virtual_machine" "kubernetes_master" {
@@ -81,7 +85,11 @@ resource "vsphere_virtual_machine" "kubernetes_master" {
     network_id     = data.vsphere_network.lab.id
     use_static_mac = true
     mac_address    = var.static-macs.kubernetes-master
-    }
+  }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path         = "ISO/rhel9.iso"
+  }
   disk {
     label            = "disk0"
     size             = 20
@@ -90,7 +98,7 @@ resource "vsphere_virtual_machine" "kubernetes_master" {
   clone {
     template_uuid = vsphere_content_library_item.content_rhel9.id
   }
-  depends_on = [vsphere_content_library_item.content_rhel9]
+  depends_on = [vsphere_content_library_item.content_rhel9, vsphere_file.rhel9_rhel9_cloud_init_upload]
 }
 
 resource "vsphere_virtual_machine" "kubernetes_worker" {
@@ -109,6 +117,10 @@ resource "vsphere_virtual_machine" "kubernetes_worker" {
   network_interface {
     network_id = data.vsphere_network.lab.id
   }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path         = "ISO/rhel9.iso"
+  }
   disk {
     label            = "disk0"
     size             = 20
@@ -117,7 +129,7 @@ resource "vsphere_virtual_machine" "kubernetes_worker" {
   clone {
     template_uuid = vsphere_content_library_item.content_rhel9.id
   }
-  depends_on = [vsphere_content_library_item.content_rhel9]
+  depends_on = [vsphere_content_library_item.content_rhel9, vsphere_file.rhel9_rhel9_cloud_init_upload]
 }
 
 resource "vsphere_virtual_machine" "truenas" {

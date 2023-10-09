@@ -92,18 +92,3 @@ variable "domain" {
   default = "domain.local"
 }
 
-variable "cloudinit-scripts" {
-  type = map(string)
-  sensitive = true
-  default = {
-    sshkey = <<EOF
-#!/bin/sh
-if [ x$1 = x"precustomization" ]; then
-    echo "Do Precustomization tasks"
-    mkdir -p /root/.ssh ; echo 'ssh-rsa <KEY HERE>' >>/root/.ssh/authorized_keys
-elif [ x$1 = x"postcustomization" ]; then
-    echo "Do Postcustomization tasks"
-fi
-EOF
-  }
-}

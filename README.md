@@ -44,6 +44,7 @@ Once this is done, run;
 $ terraform plan -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
 $ terraform apply -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
 ```
+(Note: The variable "server_ip" is the IP of the server the OVA templates are hosted on. As you can see from the above, I use a webserver hosted on the host itself. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py))
 
 ## Maintainers
 [@Tekore](https://github.com/tekore)

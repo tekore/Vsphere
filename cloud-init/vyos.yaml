@@ -2,6 +2,8 @@
 vyos_config_commands:
   - set system host-name 'vyos-prod'
 
+# Below is a work in progress to configure Vyos with cloud init.
+
 # Configure the LAN interface address
 # Configure the WAN interface
 # Configure NAT source rules
@@ -34,4 +36,3 @@ vyos_config_commands:
 # - set service dns forwarding system
 # - set service dns forwarding listen-address {{ vars.addresses.LAN }}
 # - set service dns forwarding allow-from {{ vars.subnets.LAN }}
-#

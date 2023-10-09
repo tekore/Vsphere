@@ -1,0 +1,2 @@
+# Create the ISO for cloud-init installs (that will be mounted in the CDROM at boot time)
+genisoimage -output rhel9.iso -volid cidata -joliet -rock user-data meta-data

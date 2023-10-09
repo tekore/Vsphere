@@ -1,0 +1,13 @@
+#cloud-config
+users:
+  - name: tekore
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+runcmd:
+  - touch /test.txt
+
+chpasswd:
+  list: |
+    tekore:Changeme123
+  expire: False
