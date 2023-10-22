@@ -1,2 +1,2 @@
-instance-id: cloud-rhel9
-local-hostname: cloud-rhel9
+instance-id: rhel9
+local-hostname: rhel9

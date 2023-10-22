@@ -21,7 +21,7 @@ The goals for this repository are:
 
 ## Prerequisites
 - OVA templates hosted on an accessible web server. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py)
-- A ESXI host with a passthrough enabled network card.
+- A ESXI host with a passthrough enabled network card. [See..](https://github.com/tekore/Hypervisor-Automation)
 - A VCenter installation. [See..](https://github.com/tekore/Hypervisor-Automation)
 
 ## Install
@@ -44,7 +44,7 @@ Once this is done, run;
 $ terraform plan -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
 $ terraform apply -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
 ```
-(Note: The variable "server_ip" is the IP of the server the OVA templates are hosted on. As you can see from the above, I use a webserver hosted on the host itself. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py))
+(Note: The variable "server_ip" is the IP of the webserver the OVA templates are hosted on. As you can see from the above, I use a webserver hosted on the host itself. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py))
 
 ## Maintainers
 [@Tekore](https://github.com/tekore)

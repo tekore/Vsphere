@@ -1,4 +1,4 @@
-data "local_file" "vyos" {
+data "local_file" "vyos_cloud_init" {
   filename = "${path.module}/cloud-init/vyos.yaml"
 }
 
@@ -27,15 +27,15 @@ resource "vsphere_virtual_machine" "vyos" {
     template_uuid = vsphere_content_library_item.content_vyos.id
   }
   vapp {
-    properties    = {
+    properties  = {
       password  = var.host.password
-      user-data = filebase64(data.local_file.vyos.filename)
+      user-data = filebase64(data.local_file.vyos_cloud_init.filename)
     }
   }
   lifecycle {
     ignore_changes = [vapp[0].properties,]
   }
-  replace_trigger = filebase64(data.local_file.vyos.filename)
+  replace_trigger = filebase64(data.local_file.vyos_cloud_init.filename)
   depends_on = [vsphere_content_library_item.content_vyos]
 }
 
@@ -130,41 +130,4 @@ resource "vsphere_virtual_machine" "kubernetes_worker" {
     template_uuid = vsphere_content_library_item.content_rhel9.id
   }
   depends_on = [vsphere_content_library_item.content_rhel9, vsphere_file.rhel9_rhel9_cloud_init_upload]
-}
-
-resource "vsphere_virtual_machine" "truenas" {
-  name                 = "truenas"
-  datastore_id         = data.vsphere_datastore.datastore.id
-  host_system_id       = vsphere_host.esxi.id
-  resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
-  firmware             = "efi"
-  guest_id             = "debian11_64Guest"
-  num_cpus             = 2
-  memory               = 6144
-  memory_reservation   = 6144
-  wait_for_guest_net_timeout = 0
-  wait_for_guest_ip_timeout  = 0
-  network_interface {
-    network_id = data.vsphere_network.network.id
-  }
-  disk {
-    label            = "disk0"
-    size             = 20
-    thin_provisioned = true
-  }
-  clone {
-    template_uuid = vsphere_content_library_item.content_truenas.id
-    customize {
-      linux_options {
-        host_name = "truenas"
-	domain = ".local"
-      }
-      network_interface {
-        ipv4_address = var.static-ips.truenas
-        ipv4_netmask = 24
-      }
-      ipv4_gateway = var.static-ips.gateway
-    }
-  }
-  depends_on = [vsphere_content_library_item.content_truenas]
 }

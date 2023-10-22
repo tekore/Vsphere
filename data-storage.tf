@@ -23,6 +23,14 @@ resource "vsphere_content_library" "ova_library" {
   storage_backing = [data.vsphere_datastore.datastore.id]
 }
 
+resource "vsphere_content_library_item" "content_ubuntu" {
+  name        = "UBUNTU"
+  description = "UBUNTU OVA Template"
+  file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.ubuntu)
+  library_id  = vsphere_content_library.ova_library.id
+  depends_on  = [vsphere_content_library.ova_library]
+}
+
 resource "vsphere_content_library_item" "content_rhel9" {
   name        = "RHEL9"
   description = "RHEL9 OVA Template"
@@ -39,10 +47,3 @@ resource "vsphere_content_library_item" "content_vyos" {
   depends_on  = [vsphere_content_library.ova_library]
 }
 
-resource "vsphere_content_library_item" "content_truenas" {
-  name        = "TRUENAS"
-  description = "TRUENAS OVA Template"
-  file_url    = format("http://%s:8000/%s", var.server_ip, var.templates.truenas)
-  library_id  = vsphere_content_library.ova_library.id
-  depends_on  = [vsphere_content_library.ova_library]
-}
