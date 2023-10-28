@@ -4,7 +4,7 @@ data "vsphere_host_thumbprint" "thumbprint" {
 }
 
 resource "vsphere_compute_cluster" "compute_cluster" {
-   name                       = "compute-cluster"
+   name                       = "esxi-cluster"
    datacenter_id              = vsphere_datacenter.datacenter.moid
    host_system_ids            = [vsphere_host.esxi.id]
 }

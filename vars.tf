@@ -4,6 +4,14 @@ variable "server_ip" {
 }
 
 //data-storage.tf
+variable "user-data" {
+  type = map(string)
+  default = {
+    username = "tuser"
+    password_hash = "$y$j9T$ONwgItQZd.4prhs72XSzv/$gjVPxeDWk6aA4oLSJCOO5AmIpAPNLZVIBBGCp9GOAfA" #Password here is "Changeme123"
+  }
+}
+
 variable "data-storage" {
   type = map(string)
   default = {
@@ -17,11 +25,11 @@ variable "host" {
   type = map(string)
   sensitive = true
   default = {
-    hostaddress = ""
-    username = ""
+    hostaddress = "192.168.1.100"
+    username = "root"
     password = ""
-    license = ""
-    pci-ethernet-mac = ""
+    license = "00000-00000-00000-00000-00000"
+    pci-ethernet-mac = "0000:00:00.0"
   }
 }
 
@@ -30,9 +38,9 @@ variable "vcenter" {
   type = map(string)
   sensitive = true
   default = {
-    username = ""
+    username = "administrator@vsphere.local"
     password = ""
-    hostaddress = ""
+    hostaddress = "192.168.1.200"
   }
 }
 
@@ -63,9 +71,9 @@ variable "templates" {
   type = map(string)
   sensitive = true
   default = {
-    vyos = ""
-    rhel9 = ""
-    ubuntu = ""
+    vyos = "/downloads/vyos.ova"
+    rhel9 = "/downloads/rhel.ova"
+    ubuntu = "/downloads/ubuntu.ova"
   }
 }
 
@@ -80,7 +88,7 @@ variable "static-macs" {
 variable "static-ips" {
   type = map(string)
   default = {
-    gateway = ""
+    gateway = "192.168.1.1"
   }
 }
 
@@ -91,6 +99,5 @@ variable "worker-nodes-no" {
 
 variable "domain" {
   type = string
-  sensitive = true
   default = "domain.local"
 }
