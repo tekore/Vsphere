@@ -1,7 +1,3 @@
-data "local_file" "vyos_cloud_init" {
-  filename = "${path.module}/cloud-init/vyos.yaml"
-  depends_on = [local_file.vyos_yaml]
-}
 data "local_file" "ubuntu_cloud_init" {
   filename = "${path.module}/cloud-init/ubuntu.yaml"
   depends_on = [local_file.ubuntu_yaml]
@@ -21,11 +17,17 @@ resource "vsphere_virtual_machine" "vyos" {
   num_cpus           = 1
   memory             = 1024
   memory_reservation = 1024
-  pci_device_id      = [var.host.pci-ethernet-mac]
   wait_for_guest_net_timeout = 0
   wait_for_guest_ip_timeout  = 0
   network_interface {
-    network_id = data.vsphere_network.lab.id
+    network_id  = data.vsphere_network.network.id
+    ovf_mapping = "ens192"
+    mac_address = var.static-macs.vyos-wan
+  }
+  network_interface {
+    network_id  = data.vsphere_network.lab.id
+    ovf_mapping = "ens244"
+    mac_address = var.static-macs.vyos-lan
   }
   disk {
     label            = "disk0"
@@ -36,16 +38,19 @@ resource "vsphere_virtual_machine" "vyos" {
     template_uuid = vsphere_content_library_item.content_vyos.id
   }
   vapp {
-    properties  = {
-      password  = var.host.password
-      user-data = data.local_file.vyos_cloud_init.content_base64
+    properties = {
+      password    = var.host.password
+      public-keys = var.user-data.public-key
+      ip0         = var.vyos-data.wan-ip
+      gateway     = var.vyos-data.wan-gateway
+      netmask0    = var.vyos-data.netmask
+      DNS         = var.vyos-data.dns
     }
   }
   lifecycle {
-    ignore_changes = [vapp[0].properties,]
+    ignore_changes = [vapp[0].properties]
   }
-  replace_trigger = data.local_file.vyos_cloud_init.content_base64
-  depends_on = [vsphere_content_library_item.content_vyos, data.local_file.vyos_cloud_init]
+  depends_on = [vsphere_content_library_item.content_vyos]
 }
 
 resource "vsphere_virtual_machine" "ubuntu" {

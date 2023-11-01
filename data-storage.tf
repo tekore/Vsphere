@@ -1,15 +1,3 @@
-resource "local_file" "vyos_yaml" {
-  content = <<EOT
-#cloud-config
-vyos_config_commands:
-  - set system host-name 'vyos-router'
-  - set interfaces ethernet eth0 address dhcp
-  - set interfaces ethernet eth0 description 'WAN'
-	      EOT
-  filename = "${path.module}/cloud-init/vyos.yaml"
-  file_permission = 777
-}
-
 resource "local_file" "ubuntu_yaml" {
   content = <<EOT
 #cloud-config
@@ -19,7 +7,7 @@ users:
     groups: sudo
     shell: /bin/bash
     lock_passwd: false
-    passwd: ${var.user-data.password_hash}
+    passwd: ${var.user-data.password-hash}
     sudo: ALL=(ALL) NOPASSWD:ALL
               EOT
   filename = "${path.module}/cloud-init/ubuntu.yaml"
@@ -44,7 +32,7 @@ users:
     groups: sudo
     shell: /bin/bash
     lock_passwd: false
-    passwd: ${var.user-data.password_hash}
+    passwd: ${var.user-data.password-hash}
     sudo: ALL=(ALL) NOPASSWD:ALL
 runcmd:
   - touch /place_holder_file.txt

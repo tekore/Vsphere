@@ -1,14 +1,24 @@
-// IP of the Python webserver hosting the os images
 variable "server_ip" {
   default = ""
 }
 
 //data-storage.tf
+variable "vyos-data" {
+  type = map(string)
+  default = {
+    wan-ip = "192.168.1.4"
+    wan-gateway = "192.168.1.1"
+    netmask = "24"
+    dns = "8.8.8.8"
+  }
+}
+
 variable "user-data" {
   type = map(string)
   default = {
-    username = "tuser"
-    password_hash = "$y$j9T$ONwgItQZd.4prhs72XSzv/$gjVPxeDWk6aA4oLSJCOO5AmIpAPNLZVIBBGCp9GOAfA" #Password here is "Changeme123"
+    username = "testuser"
+    public-key = ""
+    password-hash = ""
   }
 }
 
@@ -29,7 +39,6 @@ variable "host" {
     username = "root"
     password = ""
     license = "00000-00000-00000-00000-00000"
-    pci-ethernet-mac = "0000:00:00.0"
   }
 }
 
@@ -48,6 +57,7 @@ variable "vcenter" {
 variable "switches" {
   type = map(string)
   default = {
+    wan = "VM Network"
     lab = "LabSwitch"
   }
 }
@@ -81,6 +91,8 @@ variable "templates" {
 variable "static-macs" {
   type = map(string)
   default = {
+    vyos-wan = "00:55:50:57:52:55"
+    vyos-lan = "00:33:30:37:32:33"
     kubernetes-master = "00:50:56:97:08:08"
   }
 }
