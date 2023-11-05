@@ -5,6 +5,7 @@ variable "server_ip" {
 //data-storage.tf
 variable "vyos-data" {
   type = map(string)
+  sensitive = true
   default = {
     wan-ip = "192.168.1.4"
     wan-gateway = "192.168.1.1"
@@ -15,10 +16,19 @@ variable "vyos-data" {
 
 variable "user-data" {
   type = map(string)
+  sensitive = true
   default = {
     username = "testuser"
     public-key = ""
     password-hash = ""
+  }
+}
+
+variable "rhel-subscription" {
+  type = map(string)
+  default = {
+    activation-key = ""
+    org = ""
   }
 }
 

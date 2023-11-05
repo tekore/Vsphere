@@ -6,9 +6,13 @@ users:
   - name: ${var.user-data.username}
     groups: sudo
     shell: /bin/bash
+    ssh_authorized_keys: ${var.user-data.public-key}
     lock_passwd: false
     passwd: ${var.user-data.password-hash}
     sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: root
+    shell: /bin/bash
+    ssh_authorized_keys: ${var.user-data.public-key}
               EOT
   filename = "${path.module}/cloud-init/ubuntu.yaml"
   file_permission = 777
@@ -26,14 +30,25 @@ local-hostname: rhel9
 resource "local_file" "rhel9_user_data" {
   content = <<EOT
 #cloud-config
+cloud_config_modules:
+  - rh_subscription
+
 users:
   - default
   - name: ${var.user-data.username}
     groups: sudo
     shell: /bin/bash
+    ssh_authorized_keys: ${var.user-data.public-key}
     lock_passwd: false
     passwd: ${var.user-data.password-hash}
     sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: root
+    shell: /bin/bash
+    ssh_authorized_keys: ${var.user-data.public-key}
+rh_subscription:
+  activation-key: ${var.rhel-subscription.activation-key}
+  org: ${var.rhel-subscription.org}
+  auto-attach: True
 runcmd:
   - touch /place_holder_file.txt
               EOT
@@ -101,4 +116,3 @@ resource "vsphere_content_library_item" "content_vyos" {
   library_id  = vsphere_content_library.ova_library.id
   depends_on  = [vsphere_content_library.ova_library]
 }
-
