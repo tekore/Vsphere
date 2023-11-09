@@ -32,6 +32,14 @@ variable "rhel-subscription" {
   }
 }
 
+variable "cloud-init-runcmd" {
+  type = map(string)
+  default = {
+    ubuntu = ""
+    rhel = ""
+  }
+}
+
 variable "data-storage" {
   type = map(string)
   default = {
@@ -110,6 +118,7 @@ variable "static-macs" {
 variable "static-ips" {
   type = map(string)
   default = {
+    ubuntu = "192.168.1.2"
     gateway = "192.168.1.1"
   }
 }

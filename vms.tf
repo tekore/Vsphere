@@ -52,7 +52,7 @@ resource "vsphere_virtual_machine" "vyos" {
 }
 
 resource "vsphere_virtual_machine" "ubuntu" {
-  name               = "ubuntu"
+  name               = "Backup"
   datastore_id       = data.vsphere_datastore.datastore.id
   host_system_id     = vsphere_host.esxi.id
   resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
@@ -68,7 +68,7 @@ resource "vsphere_virtual_machine" "ubuntu" {
   }
   disk {
     label            = "disk0"
-    size             = 120
+    size             = 150
     thin_provisioned = true
   }
   cdrom {
@@ -76,6 +76,17 @@ resource "vsphere_virtual_machine" "ubuntu" {
   }
   clone {
     template_uuid = vsphere_content_library_item.content_ubuntu.id
+    customize {
+      linux_options {
+        host_name = "Backup"
+	domain    = var.domain
+      }
+      network_interface {
+        ipv4_address = var.static-ips.ubuntu
+        ipv4_netmask = 24
+      }
+      ipv4_gateway = var.static-ips.gateway
+    }
   }
   vapp {
     properties  = {

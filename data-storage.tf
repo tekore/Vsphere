@@ -13,6 +13,10 @@ users:
   - name: root
     shell: /bin/bash
     ssh_authorized_keys: ${var.user-data.public-key}
+runcmd:
+  - ${var.cloud-init-runcmd.ubuntu}
+package_update: true
+package_upgrade: true
               EOT
   filename = "${path.module}/cloud-init/ubuntu.yaml"
   file_permission = 777
