@@ -9,7 +9,7 @@ data "local_file" "rhel9_cloud_init" {
 
 resource "vsphere_virtual_machine" "vyos" {
   name               = "vyos"
-  datastore_id       = data.vsphere_datastore.datastore.id
+  datastore_id       = vsphere_vmfs_datastore.storage.id
   host_system_id     = vsphere_host.esxi.id
   resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware           = "efi"
@@ -53,7 +53,7 @@ resource "vsphere_virtual_machine" "vyos" {
 
 resource "vsphere_virtual_machine" "ubuntu" {
   name               = "Backup"
-  datastore_id       = data.vsphere_datastore.datastore.id
+  datastore_id       = vsphere_vmfs_datastore.storage.id
   host_system_id     = vsphere_host.esxi.id
   resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware           = "efi"
@@ -68,7 +68,7 @@ resource "vsphere_virtual_machine" "ubuntu" {
   }
   disk {
     label            = "disk0"
-    size             = 150
+    size             = 20
     thin_provisioned = true
   }
   cdrom {
@@ -99,7 +99,7 @@ resource "vsphere_virtual_machine" "ubuntu" {
 
 resource "vsphere_virtual_machine" "rhel9" {
   name               = "rhel9"
-  datastore_id       = data.vsphere_datastore.datastore.id
+  datastore_id       = vsphere_vmfs_datastore.storage.id
   host_system_id     = vsphere_host.esxi.id
   resource_pool_id   = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware           = "efi"
@@ -130,7 +130,7 @@ resource "vsphere_virtual_machine" "rhel9" {
 
 resource "vsphere_virtual_machine" "kubernetes_master" {
   name                 = "kubernetes_master"
-  datastore_id         = data.vsphere_datastore.datastore.id
+  datastore_id         = vsphere_vmfs_datastore.storage.id
   host_system_id       = vsphere_host.esxi.id
   resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware             = "efi"
@@ -164,7 +164,7 @@ resource "vsphere_virtual_machine" "kubernetes_master" {
 resource "vsphere_virtual_machine" "kubernetes_worker" {
   count                = var.worker-nodes-no
   name                 = "kubernetes_worker${count.index}"
-  datastore_id         = data.vsphere_datastore.datastore.id
+  datastore_id         = vsphere_vmfs_datastore.storage.id
   host_system_id       = vsphere_host.esxi.id
   resource_pool_id     = vsphere_compute_cluster.compute_cluster.resource_pool_id
   firmware             = "efi"

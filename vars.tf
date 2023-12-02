@@ -45,6 +45,7 @@ variable "data-storage" {
   default = {
     datacenter = "datacenter1"
     datastore = "datastore1"
+    datastore2 = "storage"
   }
 }
 

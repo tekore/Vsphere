@@ -81,14 +81,20 @@ resource "vsphere_file" "rhel9_rhel9_cloud_init_upload" {
   depends_on = [vsphere_datacenter.datacenter, local_file.rhel9_user_data]
 }
 
+resource "vsphere_datacenter" "datacenter" {
+  name = var.data-storage.datacenter
+}
+
 data "vsphere_datastore" "datastore" {
   name          = var.data-storage.datastore
   datacenter_id = vsphere_datacenter.datacenter.moid
   depends_on    = [vsphere_host.esxi]
 }
 
-resource "vsphere_datacenter" "datacenter" {
-  name = var.data-storage.datacenter
+resource "vsphere_vmfs_datastore" "storage" {
+  name           = var.data-storage.datastore2
+  host_system_id = vsphere_host.esxi.id
+  disks = data.vsphere_vmfs_disks.storage_disks.disks
 }
 
 resource "vsphere_content_library" "ova_library" {
