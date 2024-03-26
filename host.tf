@@ -31,18 +31,7 @@ resource "vsphere_host" "esxi" {
   thumbprint = data.vsphere_host_thumbprint.thumbprint.id
   license    = var.host.license
   datacenter = vsphere_datacenter.datacenter.moid
-  #depends_on = [vsphere_compute_cluster.compute_cluster]
   lifecycle {
     ignore_changes = [cluster]
   }
 }
-
-data "vsphere_vmfs_disks" "storage_disks" {
-  host_system_id = vsphere_host.esxi.id
-  rescan         = true
-  filter         = "t10.ATA"
-}
-
-#output "disks" {
-#  value = data.vsphere_vmfs_disks.storage_disks.disks
-#}

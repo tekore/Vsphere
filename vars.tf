@@ -3,17 +3,6 @@ variable "server_ip" {
 }
 
 //data-storage.tf
-variable "vyos-data" {
-  type = map(string)
-  sensitive = true
-  default = {
-    wan-ip = "192.168.1.4"
-    wan-gateway = "192.168.1.1"
-    netmask = "24"
-    dns = "8.8.8.8"
-  }
-}
-
 variable "user-data" {
   type = map(string)
   sensitive = true
@@ -32,11 +21,12 @@ variable "rhel-subscription" {
   }
 }
 
-variable "cloud-init-runcmd" {
+variable "cloud-init" {
   type = map(string)
   default = {
-    ubuntu = ""
-    rhel = ""
+    runcmd = ""
+    file = ""
+    file-path = ""
   }
 }
 
@@ -95,23 +85,10 @@ variable "vlans" {
   }
 }
 
-//templates.tf
-variable "templates" {
-  type = map(string)
-  sensitive = true
-  default = {
-    vyos = "/downloads/vyos.ova"
-    rhel9 = "/downloads/rhel.ova"
-    ubuntu = "/downloads/ubuntu.ova"
-  }
-}
-
 //vms.tf
 variable "static-macs" {
   type = map(string)
   default = {
-    vyos-wan = "00:55:50:57:52:55"
-    vyos-lan = "00:33:30:37:32:33"
     kubernetes-master = "00:50:56:97:08:08"
   }
 }

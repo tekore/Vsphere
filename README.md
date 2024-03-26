@@ -20,9 +20,7 @@ The goals for this repository are:
 4. Keep in-line with IAC methodologies.
 
 ## Prerequisites
-- OVA templates hosted on an accessible web server. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py)
-- A ESXI host with a passthrough enabled network card. [See..](https://github.com/tekore/Hypervisor-Automation)
-- A VCenter installation. [See..](https://github.com/tekore/Hypervisor-Automation)
+- A ESXI host with VCenter installed. [See..](https://github.com/tekore/Hypervisor-Automation)
 
 ## Install
 This project uses [Terraform](https://www.terraform.io/). You'll need to install Terraform to run this code, once Terraform is installed:
@@ -37,14 +35,13 @@ $ terraform init
 ```
 
 ## Usage
-The provided .tfvars template "[tfvars-template](https://github.com/tekore/Vsphere/blob/main/tfvars-template "tfvars-template")" will need to be updated with the needed variables relevant to your install.  
+If you choose to use the provided .tfvars template "[tfvars-template](https://github.com/tekore/Vsphere/blob/main/tfvars-template "tfvars-template")" will need to be updated with the needed variables relevant to your install.  
 
 Once this is done, run;
 ```sh
-$ terraform plan -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
-$ terraform apply -var-file=/<PATH-TO-TFVARS-FILE>.tfvars -var="server_ip=$(hostname -i)"
+$ terraform plan -var-file=/<PATH-TO-TFVARS-FILE>.tfvars
+$ terraform apply -var-file=/<PATH-TO-TFVARS-FILE>.tfvars
 ```
-(Note: The variable "server_ip" is the IP of the webserver the OVA templates are hosted on. As you can see from the above, I use a webserver hosted on the host itself. [See..](https://github.com/tekore/Python/blob/main/Auto-downloads.py))
 
 ## Maintainers
 [@Tekore](https://github.com/tekore)
