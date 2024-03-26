@@ -1,7 +1,3 @@
-variable "server_ip" {
-  default = ""
-}
-
 //data-storage.tf
 variable "user-data" {
   type = map(string)
